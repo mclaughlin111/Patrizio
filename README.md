@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Patrizio Gentlemen's Barber Shop — website redesign
 
-## Getting Started
+A modern, accessible, mobile-first pitch redesign of the Patrizio Gentlemen's
+Barber Shop website (Redland, Bristol). Built with Next.js (App Router),
+TypeScript, Tailwind CSS, and a client-rendered 3D violin model (USDZ via
+Three.js). The page is deliberately simple: a hero with the 3D model, a photo
+gallery carousel, then booking/contact info and services.
 
-First, run the development server:
+## Content model
+
+All editable business content — name, address, phone, opening hours,
+services, team, products, price list, testimonials and the booking URL —
+lives in one file: [`src/lib/site-config.ts`](src/lib/site-config.ts). Update
+copy there rather than hunting through components.
+
+**Before launch, update:**
+
+- `bookingUrl` (currently `"#"`) with the real booking link.
+- `priceList` entries (currently "Price to be confirmed").
+- `contact.email` (currently `null` — no email was supplied).
+- Team member photos (currently a shared group photo — see
+  [`docs/asset-rights.md`](docs/asset-rights.md)).
+
+## Project structure
+
+- `src/app/` — App Router pages, layout, global styles.
+- `src/components/` — page sections, header/footer, logo, 3D violin model.
+- `src/lib/site-config.ts` — all editable business content.
+- `public/models/violin.usdz` — the 3D model shown in the hero.
+- `public/vendor/usdz-external/` — WASM/worker files required by the USDZ
+  loader (see `docs/asset-rights.md`).
+- `public/assets/reference/` — the supplied shop-sign reference photo (art
+  direction only, not shown on the site).
+- `public/assets/source/` — photos sourced from the existing live site, used
+  in the Gallery carousel as temporary pitch assets (see
+  `docs/source-assets.md`).
+- `public/assets/generated/` — reserved for AI-generated imagery (empty; see
+  `docs/asset-prompts.md`).
+- `docs/` — source asset audit, rights/approval checklist, and generation
+  prompts.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev        # start the dev server
+npm run lint       # ESLint (flat config, eslint-config-next)
+npm run typecheck  # tsc --noEmit
+npm run build      # production build
+npm run start      # serve the production build
+```
 
-## Learn More
+## Accessibility & motion
 
-To learn more about Next.js, take a look at the following resources:
+- Semantic landmarks, one `<h1>`, logical heading order, skip-to-content link.
+- Visible focus rings on every interactive element (works on light and dark
+  backgrounds).
+- The animated violin model (`components/ViolinScene.tsx`) is decorative
+  (`aria-hidden`), lazy-loaded client-side only, and automatically:
+  - stops rotating/floating and swaps to a static SVG when
+    `prefers-reduced-motion: reduce` is set,
+  - falls back to the same static SVG if the model fails to load or the
+    browser doesn't support the required WebAssembly/`SharedArrayBuffer`
+    features.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploying to Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Push this repository to GitHub (or GitLab/Bitbucket).
+2. In the [Vercel dashboard](https://vercel.com/new), import the repository.
+3. Framework preset: **Next.js** (auto-detected). No environment variables
+   are required — see `.env.example` (currently empty/unused).
+4. Deploy. No database, CMS or authentication is configured.
 
-## Deploy on Vercel
+## Before public launch
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See [`docs/asset-rights.md`](docs/asset-rights.md) for the full approval
+checklist. In short, the shop should confirm:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The team photo and shop interior photo (sourced from the existing site).
+- The "Mike, Redland" testimonial, reused verbatim from the existing site.
+- The recreated vector logo.
+- Real prices, booking URL, and (optionally) a contact email.

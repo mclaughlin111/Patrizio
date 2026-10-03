@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored third-party WASM loader assets — not our source code.
+    "public/vendor/**",
   ]),
 ]);
 

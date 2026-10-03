@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* Patrizio visual system — modern barbershop palette. */
+  --white: #ffffff;
+  --charcoal: #211c18;
+  --charcoal-soft: #3a332c;
+  --barber-red: #a3352d;
+  --barber-red-deep: #7f2d27;
+  --brass: #b5904f;
+  --brass-light: #d9bd82;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Semantic surface/text tokens — light by default, dark follows the OS setting. */
+  --paper: #f6f3ee;
+  --paper-soft: #ece7df;
+  --fg: #1c1815;
+  --mute: #6e655c;
+  --border-soft: rgba(28, 24, 21, 0.12);
+  --focus: var(--fg);
+
+  --background: var(--paper);
+  --foreground: var(--fg);
+  color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #0d0b0a;
+    --paper-soft: #14110f;
+    --fg: #ece5da;
+    --mute: #9b9187;
+    --border-soft: rgba(236, 229, 218, 0.1);
+  }
+}
+
+@theme inline {
+  --color-white: var(--white);
+  --color-charcoal: var(--charcoal);
+  --color-charcoal-soft: var(--charcoal-soft);
+  --color-barber-red: var(--barber-red);
+  --color-barber-red-deep: var(--barber-red-deep);
+  --color-brass: var(--brass);
+  --color-brass-light: var(--brass-light);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-fg: var(--fg);
+  --color-mute: var(--mute);
+  --color-border-soft: var(--border-soft);
+  --color-focus: var(--focus);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-serif);
+}
+
+@layer base {
+
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border-soft);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--paper);
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+[id] {
+  scroll-margin-top: 4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  background: var(--barber-red);
+  color: var(--white);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: top 0.15s ease-out;
+}
+
+.skip-link:focus {
+  top: 1rem;
 }
