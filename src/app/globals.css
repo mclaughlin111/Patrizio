@@ -103,6 +103,13 @@ body {
   border-radius: 2px;
 }
 
+/* Soft halo in the page colour lifts hero text off the violin behind it. */
+.hero-text {
+  text-shadow:
+    0 0 14px color-mix(in srgb, var(--paper) 85%, transparent),
+    0 1px 3px color-mix(in srgb, var(--fg) 14%, transparent);
+}
+
 .skip-link {
   position: absolute;
   left: 1rem;
